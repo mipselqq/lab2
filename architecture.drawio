@@ -1,0 +1,152 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<mxfile host="app.diagrams.net" version="32.7.4">
+  <diagram id="lab2-cdc" name="Схема">
+    <mxGraphModel dx="1650" dy="980" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="990" background="#FFFFFF">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="title" value="Схема обработки изменений справочника счетов" style="html=1;whiteSpace=wrap;fontFamily=Liberation Serif;fontColor=#202020;align=left;verticalAlign=middle;strokeColor=none;fillColor=none;fontSize=31;fontColor=#202020;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="25" y="26" width="1500" height="52" as="geometry" />
+        </mxCell>
+        <mxCell id="sub" value="Практическая работа № 2, вариант 1" style="html=1;whiteSpace=wrap;fontFamily=Liberation Serif;fontColor=#202020;align=left;verticalAlign=middle;strokeColor=none;fillColor=none;fontSize=19;fontColor=#303030;fontStyle=0;" vertex="1" parent="1">
+          <mxGeometry x="26" y="78" width="1250" height="31" as="geometry" />
+        </mxCell>
+        <mxCell id="capture" value="Захват изменений и обработка потока" style="html=1;whiteSpace=wrap;fontFamily=Liberation Serif;fontColor=#202020;align=left;verticalAlign=top;spacingTop=14;spacingLeft=20;rounded=0;strokeColor=#AAAAAA;fillColor=none;fontColor=#202020;fontSize=16;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="25" y="135" width="1530" height="290" as="geometry" />
+        </mxCell>
+        <mxCell id="lake" value="Хранение истории и выполнение запросов" style="html=1;whiteSpace=wrap;fontFamily=Liberation Serif;fontColor=#202020;align=left;verticalAlign=top;spacingTop=14;spacingLeft=20;rounded=0;strokeColor=#AAAAAA;fillColor=none;fontColor=#202020;fontSize=16;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="25" y="455" width="1530" height="432" as="geometry" />
+        </mxCell>
+        <mxCell id="pg" value="&lt;b&gt;PostgreSQL&lt;/b&gt;&lt;br&gt;public.accounts&lt;br&gt;Владелец и статус" style="html=1;whiteSpace=wrap;fontFamily=Liberation Serif;fontColor=#202020;rounded=0;fillColor=#FFFFFF;strokeColor=#505050;strokeWidth=1;spacing=6;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="52" y="215" width="235" height="115" as="geometry" />
+        </mxCell>
+        <mxCell id="cdc" value="&lt;b&gt;Debezium&lt;/b&gt;&lt;br&gt;Kafka Connect&lt;br&gt;Снимок и чтение WAL" style="html=1;whiteSpace=wrap;fontFamily=Liberation Serif;fontColor=#202020;rounded=0;fillColor=#FFFFFF;strokeColor=#505050;strokeWidth=1;spacing=6;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="423" y="215" width="236" height="115" as="geometry" />
+        </mxCell>
+        <mxCell id="kafka" value="&lt;b&gt;Apache Kafka&lt;/b&gt;&lt;br&gt;bank.public.accounts&lt;br&gt;Одна партиция, ключ account_id" style="html=1;whiteSpace=wrap;fontFamily=Liberation Serif;fontColor=#202020;rounded=0;fillColor=#FFFFFF;strokeColor=#505050;strokeWidth=1;spacing=6;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="795" y="215" width="281" height="115" as="geometry" />
+        </mxCell>
+        <mxCell id="worker" value="&lt;b&gt;Python + PyIceberg&lt;/b&gt;&lt;br&gt;Микробатч до 100 событий&lt;br&gt;Расчёт версий" style="html=1;whiteSpace=wrap;fontFamily=Liberation Serif;fontColor=#202020;rounded=0;fillColor=#FFFFFF;strokeColor=#505050;strokeWidth=1;spacing=6;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="1210" y="215" width="316" height="115" as="geometry" />
+        </mxCell>
+        <mxCell id="trino" value="&lt;b&gt;Trino&lt;/b&gt;&lt;br&gt;Текущее состояние&lt;br&gt;и запрос на дату" style="html=1;whiteSpace=wrap;fontFamily=Liberation Serif;fontColor=#202020;rounded=0;fillColor=#FFFFFF;strokeColor=#505050;strokeWidth=1;spacing=6;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="53" y="535" width="235" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="silver" value="&lt;b&gt;Таблица Silver (Iceberg)&lt;/b&gt;&lt;br&gt;accounts_history&lt;br&gt;SCD Type 2, [начало, конец)" style="html=1;whiteSpace=wrap;fontFamily=Liberation Serif;fontColor=#202020;rounded=0;fillColor=#FFFFFF;strokeColor=#505050;strokeWidth=1;spacing=6;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="425" y="535" width="234" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="bronze" value="&lt;b&gt;Таблица Bronze (Iceberg)&lt;/b&gt;&lt;br&gt;accounts_cdc&lt;br&gt;Журнал событий CDC" style="html=1;whiteSpace=wrap;fontFamily=Liberation Serif;fontColor=#202020;rounded=0;fillColor=#FFFFFF;strokeColor=#505050;strokeWidth=1;spacing=6;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="795" y="535" width="281" height="120" as="geometry" />
+        </mxCell>
+        <mxCell id="s3" value="&lt;b&gt;Silo (хранилище S3)&lt;/b&gt;&lt;br&gt;Parquet и метаданные&lt;br&gt;бакет lab2-history" style="html=1;whiteSpace=wrap;fontFamily=Liberation Serif;fontColor=#202020;rounded=0;fillColor=#FFFFFF;strokeColor=#505050;strokeWidth=1;spacing=6;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="1210" y="742" width="316" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="catalog" value="&lt;b&gt;Lakekeeper&lt;/b&gt;&lt;br&gt;Iceberg REST Catalog&lt;br&gt;warehouse history" style="html=1;whiteSpace=wrap;fontFamily=Liberation Serif;fontColor=#202020;rounded=0;fillColor=#FFFFFF;strokeColor=#505050;strokeWidth=1;spacing=6;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="425" y="742" width="234" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="meta-db" value="&lt;b&gt;PostgreSQL каталога&lt;/b&gt;&lt;br&gt;Таблицы и состояние&lt;br&gt;REST-каталога" style="html=1;whiteSpace=wrap;fontFamily=Liberation Serif;fontColor=#202020;rounded=0;fillColor=#FFFFFF;strokeColor=#505050;strokeWidth=1;spacing=6;fontSize=16;" vertex="1" parent="1">
+          <mxGeometry x="53" y="742" width="235" height="105" as="geometry" />
+        </mxCell>
+        <mxCell id="pg-cdc" value="снимок и WAL" style="html=1;whiteSpace=wrap;fontFamily=Liberation Serif;fontColor=#202020;whiteSpace=nowrap;edgeStyle=segmentEdgeStyle;rounded=0;jumpStyle=arc;jumpSize=8;endArrow=block;endFill=1;strokeColor=#202020;fontColor=#202020;fontSize=15;fontStyle=0;strokeWidth=1.2;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="pg" target="cdc">
+          <mxGeometry x="0" relative="1" as="geometry">
+            <mxPoint x="0" y="-17" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="cdc-kafka" value="JSON r/c/u/d" style="html=1;whiteSpace=wrap;fontFamily=Liberation Serif;fontColor=#202020;whiteSpace=nowrap;edgeStyle=segmentEdgeStyle;rounded=0;jumpStyle=arc;jumpSize=8;endArrow=block;endFill=1;strokeColor=#202020;fontColor=#202020;fontSize=15;fontStyle=0;strokeWidth=1.2;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="1" source="cdc" target="kafka">
+          <mxGeometry x="0" relative="1" as="geometry">
+            <mxPoint x="0" y="-17" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="kafka-worker" value="пачка событий" style="html=1;whiteSpace=wrap;fontFamily=Liberation Serif;fontColor=#202020;whiteSpace=nowrap;edgeStyle=segmentEdgeStyle;rounded=0;jumpStyle=arc;jumpSize=8;endArrow=block;endFill=1;strokeColor=#202020;fontColor=#202020;fontSize=15;fontStyle=0;strokeWidth=1.2;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.35;entryX=0;entryY=0.35;" edge="1" parent="1" source="kafka" target="worker">
+          <mxGeometry x="0" relative="1" as="geometry">
+            <mxPoint x="0" y="-16" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="worker-kafka" value="фиксация позиции" style="html=1;whiteSpace=wrap;fontFamily=Liberation Serif;fontColor=#202020;whiteSpace=nowrap;edgeStyle=segmentEdgeStyle;rounded=0;jumpStyle=arc;jumpSize=8;endArrow=block;endFill=1;strokeColor=#202020;fontColor=#202020;fontSize=15;fontStyle=0;strokeWidth=1.2;labelBackgroundColor=#FFFFFF;exitX=0;exitY=0.71;entryX=1;entryY=0.71;" edge="1" parent="1" source="worker" target="kafka">
+          <mxGeometry x="0" relative="1" as="geometry">
+            <mxPoint x="0" y="16" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="worker-bronze" value="запись CDC" style="html=1;whiteSpace=wrap;fontFamily=Liberation Serif;fontColor=#202020;whiteSpace=nowrap;edgeStyle=segmentEdgeStyle;rounded=0;jumpStyle=arc;jumpSize=8;endArrow=block;endFill=1;strokeColor=#202020;fontColor=#202020;fontSize=15;fontStyle=0;strokeWidth=1.2;labelBackgroundColor=#FFFFFF;exitX=0.35;exitY=1;entryX=0.84;entryY=0;" edge="1" parent="1" source="worker" target="bronze">
+          <mxGeometry x="0" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1321" y="454" />
+              <mxPoint x="1031" y="454" />
+            </Array>
+            <mxPoint x="12" y="-15" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="bronze-worker" value="чтение CDC по ключу" style="html=1;whiteSpace=wrap;fontFamily=Liberation Serif;fontColor=#202020;whiteSpace=nowrap;edgeStyle=segmentEdgeStyle;rounded=0;jumpStyle=arc;jumpSize=8;endArrow=block;endFill=1;strokeColor=#202020;fontColor=#202020;fontSize=15;fontStyle=0;strokeWidth=1.2;labelBackgroundColor=#FFFFFF;exitX=0.56;exitY=0;entryX=0.15;entryY=1;" edge="1" parent="1" source="bronze" target="worker">
+          <mxGeometry x="0" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="952" y="399" />
+              <mxPoint x="1257" y="399" />
+            </Array>
+            <mxPoint x="0" y="-15" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="worker-silver" value="пересчёт версий" style="html=1;whiteSpace=wrap;fontFamily=Liberation Serif;fontColor=#202020;whiteSpace=nowrap;edgeStyle=segmentEdgeStyle;rounded=0;jumpStyle=arc;jumpSize=8;endArrow=block;endFill=1;strokeColor=#202020;fontColor=#202020;fontSize=15;fontStyle=0;strokeWidth=1.2;labelBackgroundColor=#FFFFFF;exitX=0.07;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="worker" target="silver">
+          <mxGeometry x="0" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1232" y="366" />
+              <mxPoint x="542" y="366" />
+            </Array>
+            <mxPoint x="0" y="-16" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="silver-trino" value="чтение истории" style="html=1;whiteSpace=wrap;fontFamily=Liberation Serif;fontColor=#202020;whiteSpace=nowrap;edgeStyle=segmentEdgeStyle;rounded=0;jumpStyle=arc;jumpSize=8;endArrow=block;endFill=1;strokeColor=#202020;fontColor=#202020;fontSize=15;fontStyle=0;strokeWidth=1.2;labelBackgroundColor=#FFFFFF;exitX=0;exitY=0.5;entryX=1;entryY=0.5;" edge="1" parent="1" source="silver" target="trino">
+          <mxGeometry x="0" relative="1" as="geometry">
+            <mxPoint x="0" y="-17" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="silver-s3" value="Parquet Silver" style="html=1;whiteSpace=wrap;fontFamily=Liberation Serif;fontColor=#202020;whiteSpace=nowrap;edgeStyle=segmentEdgeStyle;rounded=0;jumpStyle=arc;jumpSize=8;endArrow=block;endFill=1;strokeColor=#202020;fontColor=#202020;fontSize=15;fontStyle=0;strokeWidth=1.2;labelBackgroundColor=#FFFFFF;exitX=0.76;exitY=1;entryX=0.35;entryY=0;" edge="1" parent="1" source="silver" target="s3">
+          <mxGeometry x="0" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="603" y="707" />
+              <mxPoint x="1321" y="707" />
+            </Array>
+            <mxPoint x="0" y="-15" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="bronze-s3" value="Parquet Bronze" style="html=1;whiteSpace=wrap;fontFamily=Liberation Serif;fontColor=#202020;whiteSpace=nowrap;edgeStyle=segmentEdgeStyle;rounded=0;jumpStyle=arc;jumpSize=8;endArrow=block;endFill=1;strokeColor=#202020;fontColor=#202020;fontSize=15;fontStyle=0;strokeWidth=1.2;labelBackgroundColor=#FFFFFF;exitX=1;exitY=0.65;entryX=0.7;entryY=0;" edge="1" parent="1" source="bronze" target="s3">
+          <mxGeometry x="0" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="1431" y="613" />
+            </Array>
+            <mxPoint x="0" y="-15" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="trino-catalog" value="снимки таблиц" style="html=1;whiteSpace=wrap;fontFamily=Liberation Serif;fontColor=#202020;whiteSpace=nowrap;edgeStyle=segmentEdgeStyle;rounded=0;jumpStyle=arc;jumpSize=8;endArrow=block;endFill=1;strokeColor=#565656;fontColor=#565656;fontSize=15;fontStyle=0;strokeWidth=1.2;labelBackgroundColor=#FFFFFF;exitX=0.73;exitY=1;entryX=0.11;entryY=0;dashed=1;dashPattern=5 4;" edge="1" parent="1" source="trino" target="catalog">
+          <mxGeometry x="0" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="224" y="689" />
+              <mxPoint x="451" y="689" />
+            </Array>
+            <mxPoint x="0" y="-15" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="silver-catalog" value="снимки" style="html=1;whiteSpace=wrap;fontFamily=Liberation Serif;fontColor=#202020;whiteSpace=nowrap;edgeStyle=segmentEdgeStyle;rounded=0;jumpStyle=arc;jumpSize=8;endArrow=block;endFill=1;strokeColor=#565656;fontColor=#565656;fontSize=15;fontStyle=0;strokeWidth=1.2;labelBackgroundColor=#FFFFFF;exitX=0.4;exitY=1;entryX=0.4;entryY=0;dashed=1;dashPattern=5 4;" edge="1" parent="1" source="silver" target="catalog">
+          <mxGeometry x="0" relative="1" as="geometry">
+            <mxPoint x="40" y="-10" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="bronze-catalog" value="метаданные Bronze" style="html=1;whiteSpace=wrap;fontFamily=Liberation Serif;fontColor=#202020;whiteSpace=nowrap;edgeStyle=segmentEdgeStyle;rounded=0;jumpStyle=arc;jumpSize=8;endArrow=block;endFill=1;strokeColor=#565656;fontColor=#565656;fontSize=15;fontStyle=0;strokeWidth=1.2;labelBackgroundColor=#FFFFFF;exitX=0.35;exitY=1;entryX=1;entryY=0.47;dashed=1;dashPattern=5 4;" edge="1" parent="1" source="bronze" target="catalog">
+          <mxGeometry x="0" relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="893" y="791" />
+            </Array>
+            <mxPoint x="-25" y="-14" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="catalog-db" value="состояние каталога" style="html=1;whiteSpace=wrap;fontFamily=Liberation Serif;fontColor=#202020;whiteSpace=nowrap;edgeStyle=segmentEdgeStyle;rounded=0;jumpStyle=arc;jumpSize=8;endArrow=block;endFill=1;strokeColor=#565656;fontColor=#565656;fontSize=15;fontStyle=0;strokeWidth=1.2;labelBackgroundColor=#FFFFFF;exitX=0;exitY=0.5;entryX=1;entryY=0.5;dashed=1;dashPattern=5 4;" edge="1" parent="1" source="catalog" target="meta-db">
+          <mxGeometry x="0" relative="1" as="geometry">
+            <mxPoint x="0" y="16" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="legend" value="Сплошные стрелки — данные и позиции Kafka. Пунктирные стрелки — обращения к метаданным." style="html=1;whiteSpace=wrap;fontFamily=Liberation Serif;fontColor=#202020;align=left;verticalAlign=middle;strokeColor=none;fillColor=none;fontSize=16;fontColor=#202020;fontStyle=0;" vertex="1" parent="1">
+          <mxGeometry x="26" y="911" width="1480" height="25" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

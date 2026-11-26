@@ -1,0 +1,23 @@
+ Container lab2-cdc-materialize-1  Stopping
+ Container lab2-cdc-materialize-1  Stopped
+Назначена bank.public.accounts[0], start=18, high=19
+Контрольный сбой: Bronze сохранён, Silver и offset ещё не записаны
+После сбоя (Bronze, уникальные offsets, Silver, текущий статус): 9	9	4	OPEN
+ Container lab2-cdc-catalog-db-1  Waiting
+ Container lab2-cdc-kafka-1  Waiting
+ Container lab2-cdc-postgres-1  Waiting
+ Container lab2-cdc-kafka-1  Healthy
+ Container lab2-cdc-catalog-db-1  Healthy
+ Container lab2-cdc-migrate-1  Starting
+ Container lab2-cdc-postgres-1  Healthy
+ Container lab2-cdc-migrate-1  Started
+ Container lab2-cdc-migrate-1  Waiting
+ Container lab2-cdc-migrate-1  Exited
+ Container lab2-cdc-setup-1  Starting
+ Container lab2-cdc-setup-1  Started
+ Container lab2-cdc-setup-1  Waiting
+ Container lab2-cdc-setup-1  Exited
+ Container lab2-cdc-materialize-1  Starting
+ Container lab2-cdc-materialize-1  Started
+После повторного чтения: 9	9	5	CLOSED
+Проверки восстановления пройдены

@@ -1,0 +1,138 @@
+name: lab2-cdc
+
+services:
+  postgres:
+    image: postgres:17.7-bookworm
+    command: ["postgres", "-c", "wal_level=logical"]
+    environment:
+      POSTGRES_DB: banking
+      POSTGRES_USER: banking
+      POSTGRES_PASSWORD: banking-local
+    volumes:
+      - source-data:/var/lib/postgresql/data
+      - ./sql/source.sql:/docker-entrypoint-initdb.d/01-source.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -U banking -d banking"]
+      interval: 3s
+      timeout: 3s
+      retries: 30
+
+  kafka:
+    image: apache/kafka:3.9.1
+    environment:
+      KAFKA_NODE_ID: "1"
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_LISTENERS: PLAINTEXT://:9092,CONTROLLER://:9093
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,CONTROLLER:PLAINTEXT
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@kafka:9093
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: "1"
+      KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: "1"
+      KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: "1"
+      KAFKA_NUM_PARTITIONS: "1"
+      KAFKA_LOG_DIRS: /var/lib/kafka/data
+      KAFKA_HEAP_OPTS: -Xms256m -Xmx512m
+    volumes:
+      - kafka-data:/var/lib/kafka/data
+    healthcheck:
+      test: ["CMD", "/opt/kafka/bin/kafka-topics.sh", "--bootstrap-server", "localhost:9092", "--list"]
+      interval: 5s
+      timeout: 8s
+      retries: 30
+
+  connect:
+    image: quay.io/debezium/connect:3.2.4.Final
+    environment:
+      BOOTSTRAP_SERVERS: kafka:9092
+      GROUP_ID: lab2-connect
+      CONFIG_STORAGE_TOPIC: lab2-connect-config
+      OFFSET_STORAGE_TOPIC: lab2-connect-offsets
+      STATUS_STORAGE_TOPIC: lab2-connect-status
+      CONFIG_STORAGE_REPLICATION_FACTOR: "1"
+      OFFSET_STORAGE_REPLICATION_FACTOR: "1"
+      STATUS_STORAGE_REPLICATION_FACTOR: "1"
+      OFFSET_STORAGE_PARTITIONS: "1"
+      STATUS_STORAGE_PARTITIONS: "1"
+      CONNECT_KEY_CONVERTER_SCHEMAS_ENABLE: "false"
+      CONNECT_VALUE_CONVERTER_SCHEMAS_ENABLE: "false"
+      KAFKA_HEAP_OPTS: -Xms256m -Xmx768m
+    depends_on:
+      kafka:
+        condition: service_healthy
+      postgres:
+        condition: service_healthy
+
+  minio:
+    image: pgsty/silo:RELEASE.2026-10-26T00-00-00Z
+    command: ["server", "/data"]
+    environment:
+      MINIO_ROOT_USER: lab2storage
+      MINIO_ROOT_PASSWORD: lab2-s3-password
+    volumes:
+      - object-data:/data
+
+  catalog-db:
+    image: postgres:17.7-bookworm
+    environment:
+      POSTGRES_PASSWORD: catalog-local
+    volumes:
+      - catalog-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -U postgres"]
+      interval: 3s
+      timeout: 3s
+      retries: 30
+
+  migrate:
+    image: quay.io/lakekeeper/catalog:v0.12.2
+    command: ["migrate"]
+    environment: &catalog-env
+      LAKEKEEPER__PG_ENCRYPTION_KEY: lab2-local-encryption-key
+      LAKEKEEPER__PG_DATABASE_URL_READ: postgresql://postgres:catalog-local@catalog-db:5432/postgres
+      LAKEKEEPER__PG_DATABASE_URL_WRITE: postgresql://postgres:catalog-local@catalog-db:5432/postgres
+    depends_on:
+      catalog-db:
+        condition: service_healthy
+
+  lakekeeper:
+    image: quay.io/lakekeeper/catalog:v0.12.2
+    command: ["serve"]
+    environment: *catalog-env
+    depends_on:
+      migrate:
+        condition: service_completed_successfully
+
+  setup:
+    build: .
+    image: lab2-cdc-worker:1
+    command: ["python", "-m", "scripts.setup"]
+    depends_on:
+      - connect
+      - lakekeeper
+      - minio
+
+  materialize:
+    image: lab2-cdc-worker:1
+    pull_policy: never
+    command: ["python", "-m", "scripts.materialize"]
+    depends_on:
+      setup:
+        condition: service_completed_successfully
+
+  trino:
+    image: trinodb/trino:476
+    ports:
+      - "127.0.0.1:18082:8080"
+    volumes:
+      - ./catalog/history.properties:/etc/trino/catalog/history.properties:ro
+      - ./catalog/jvm.config:/etc/trino/jvm.config:ro
+    depends_on:
+      setup:
+        condition: service_completed_successfully
+
+volumes:
+  source-data:
+  kafka-data:
+  object-data:
+  catalog-data:

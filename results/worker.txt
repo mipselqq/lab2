@@ -1,0 +1,8 @@
+materialize-1  | Назначена bank.public.accounts[0], start=-2, high=2
+materialize-1  | /usr/local/lib/python3.12/site-packages/pyiceberg/table/__init__.py:715: UserWarning: Delete operation did not match any records
+materialize-1  |   warnings.warn("Delete operation did not match any records")
+materialize-1  | offset=0..1 bronze_new=2 silver_keys=2 committed=2
+materialize-1  | offset=2..9 bronze_new=8 silver_keys=1 committed=10
+materialize-1  | offset=10..17 bronze_new=8 silver_keys=1 committed=18
+materialize-1  | Назначена bank.public.accounts[0], start=18, high=19
+materialize-1  | offset=18..18 bronze_new=0 silver_keys=1 committed=19

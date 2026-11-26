@@ -1,0 +1,28 @@
+2026-11-25 20:21:57 UTC
+Docker version 20.10.24+dfsg1, build 297e128
+Docker Compose version v2.39.4
+
+$ docker ps --filter label=com.docker.compose.project=lab2-cdc
+CONTAINER ID   IMAGE                                     COMMAND                  CREATED         STATUS                   PORTS                          NAMES
+a44372610fe1   lab2-cdc-worker:1                         "python -m scripts.m…"   2 minutes ago   Up 34 seconds                                           lab2-cdc-materialize-1
+656577916bae   quay.io/debezium/connect:3.2.4.Final      "/docker-entrypoint.…"   5 minutes ago   Up 5 minutes             8083/tcp, 8778/tcp, 9092/tcp   lab2-cdc-connect-1
+44837b71a004   trinodb/trino:476                         "/usr/lib/trino/bin/…"   6 minutes ago   Up 5 minutes (healthy)   127.0.0.1:18082->8080/tcp      lab2-cdc-trino-1
+05972bee9765   quay.io/lakekeeper/catalog:v0.12.2        "/home/nonroot/lakek…"   6 minutes ago   Up 5 minutes                                            lab2-cdc-lakekeeper-1
+2846a15fc51a   postgres:17.7-bookworm                    "docker-entrypoint.s…"   6 minutes ago   Up 6 minutes (healthy)   5432/tcp                       lab2-cdc-catalog-db-1
+d267386c9fc2   apache/kafka:3.9.1                        "/__cacert_entrypoin…"   6 minutes ago   Up 6 minutes (healthy)   9092/tcp                       lab2-cdc-kafka-1
+b11c83487cfc   postgres:17.7-bookworm                    "docker-entrypoint.s…"   6 minutes ago   Up 6 minutes (healthy)   5432/tcp                       lab2-cdc-postgres-1
+abd995d9dbc3   pgsty/silo:RELEASE.2026-10-26T00-00-00Z   "/usr/bin/docker-ent…"   6 minutes ago   Up 6 minutes             9000/tcp                       lab2-cdc-minio-1
+
+$ docker compose ps -a
+NAME                     IMAGE                                     COMMAND                  SERVICE       CREATED          STATUS                      PORTS
+lab2-cdc-catalog-db-1    postgres:17.7-bookworm                    "docker-entrypoint.s…"   catalog-db    6 minutes ago    Up 6 minutes (healthy)      5432/tcp
+lab2-cdc-connect-1       quay.io/debezium/connect:3.2.4.Final      "/docker-entrypoint.…"   connect       5 minutes ago    Up 5 minutes                8083/tcp, 8778/tcp, 9092/tcp
+lab2-cdc-kafka-1         apache/kafka:3.9.1                        "/__cacert_entrypoin…"   kafka         6 minutes ago    Up 6 minutes (healthy)      9092/tcp
+lab2-cdc-lakekeeper-1    quay.io/lakekeeper/catalog:v0.12.2        "/home/nonroot/lakek…"   lakekeeper    6 minutes ago    Up 5 minutes
+lab2-cdc-materialize-1   lab2-cdc-worker:1                         "python -m scripts.m…"   materialize   2 minutes ago    Up 34 seconds
+lab2-cdc-migrate-1       quay.io/lakekeeper/catalog:v0.12.2        "/home/nonroot/lakek…"   migrate       6 minutes ago    Exited (0) 37 seconds ago
+lab2-cdc-minio-1         pgsty/silo:RELEASE.2026-10-26T00-00-00Z   "/usr/bin/docker-ent…"   minio         6 minutes ago    Up 6 minutes                9000/tcp
+lab2-cdc-postgres-1      postgres:17.7-bookworm                    "docker-entrypoint.s…"   postgres      6 minutes ago    Up 6 minutes (healthy)      5432/tcp
+lab2-cdc-replay-1001     lab2-cdc-worker:1                         "python -m scripts.m…"   materialize   52 seconds ago   Exited (1) 40 seconds ago
+lab2-cdc-setup-1         lab2-cdc-worker:1                         "python -m scripts.s…"   setup         2 minutes ago    Exited (0) 35 seconds ago
+lab2-cdc-trino-1         trinodb/trino:476                         "/usr/lib/trino/bin/…"   trino         6 minutes ago    Up 5 minutes (healthy)      127.0.0.1:18082->8080/tcp

@@ -1,0 +1,4 @@
+boto3==1.40.45
+confluent-kafka==2.11.1
+pyarrow==20.0.0
+pyiceberg==0.10.0
